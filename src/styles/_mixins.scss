@@ -1,0 +1,53 @@
+@mixin input {
+  padding: 10px;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: transparent;
+  box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+  border: none;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  outline-color: rgba(34, 34, 96, 0.6);
+  outline-width: 2px;
+
+  color: rgba(34, 34, 96, 1);
+
+  resize: none;
+  transition: all 0.3s ease-in-out;
+}
+
+@mixin button {
+  margin-top: 10px;
+  padding: 12px 24px;
+  width: max-content;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  border: none;
+  border-radius: 30px;
+  background-color: var(--color-accent);
+  color: #fff;
+  opacity: 0.8;
+
+  transition: all 0.2s linear;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  svg {
+    height: 25px;
+    width: 25px;
+
+    fill: #fff;
+  }
+}

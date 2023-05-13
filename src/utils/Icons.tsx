@@ -1,0 +1,15 @@
+export { ReactComponent as Dashboard } from "@/assets/icons/chart-icon.svg";
+export { ReactComponent as Transactions } from "@/assets/icons/debit-card-icon.svg";
+export { ReactComponent as Trend } from "@/assets/icons/money-bill-trend-up-solid.svg";
+export { ReactComponent as Expenses } from "@/assets/icons/money-bill-transfer-solid.svg";
+export { ReactComponent as Signout } from "@/assets/icons/sign-out.svg";
+export { ReactComponent as Plus } from "@/assets/icons/plus.svg";
+export { ReactComponent as Spinner } from "@/assets/icons/spinner.svg";
+export { ReactComponent as Wallet } from "@/assets/icons/wallet.svg";
+export { ReactComponent as Comment } from "@/assets/icons/comment.svg";
+export { ReactComponent as Calendar } from "@/assets/icons/calendar.svg";
+export { ReactComponent as Trash } from "@/assets/icons/trash.svg";
+export { ReactComponent as Money } from "@/assets/icons/money-bill-wave.svg";
+export { ReactComponent as Categories } from "@/assets/icons/categories.svg";
+export { ReactComponent as PasswordShow } from "@/assets/icons/eye.svg";
+export { ReactComponent as PasswordHide } from "@/assets/icons/eye-slash.svg";

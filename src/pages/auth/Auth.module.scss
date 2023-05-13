@@ -1,0 +1,51 @@
+@import "@/styles/_mixins.scss";
+
+.Auth {
+  display: grid;
+  align-items: center;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.AuthWrapper {
+  position: relative;
+  padding: 2rem 1.5rem;
+
+  width: 60vw;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 25px;
+
+  background: rgba(252, 246, 249, 0.78);
+  border: 3px solid #ffffff;
+  backdrop-filter: blur(4.5px);
+  border-radius: 32px;
+}
+
+.Subtitle {
+  a {
+    color: var(--color-accent);
+
+    &:hover {
+      font-weight: 700;
+    }
+  }
+}
+
+.Title {
+  margin: 0;
+}
+
+.Form {
+  width: 350px;
+}
+
+.LinkButton {
+  @include button;
+  text-decoration: none;
+}

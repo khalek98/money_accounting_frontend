@@ -1,0 +1,90 @@
+.Notification {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  padding: 20px 50px 20px 20px;
+
+  display: flex;
+  justify-content: space-between;
+
+  height: auto;
+  width: calc(100% - 30px);
+  max-width: 767px;
+
+  letter-spacing: 1px;
+  font-weight: 700;
+
+  border-radius: 10px;
+  animation: slideIn 0.1s ease-in-out;
+
+  z-index: 99;
+
+  &.success {
+    background-color: lightgreen;
+    color: green;
+  }
+
+  &.error {
+    background-color: lightcoral;
+    color: crimson;
+  }
+
+  @media screen and (min-width: 768px) {
+    max-width: 400px;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX((calc(-15px - 100%)));
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+
+.Button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  height: 20px;
+  width: 20px;
+
+  display: grid;
+  align-content: center;
+  row-gap: 5px;
+  // justify-content: space-between;
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 2px;
+
+    background-color: green;
+
+    &:first-child {
+      transform: translateY(3px) rotate(45deg);
+    }
+
+    &:last-child {
+      transform: translateY(-4px) rotate(-45deg);
+    }
+  }
+
+  &.success {
+    span {
+      background-color: green;
+    }
+  }
+
+  &.error {
+    span {
+      background-color: crimson;
+    }
+  }
+}
