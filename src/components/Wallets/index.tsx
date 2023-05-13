@@ -22,7 +22,7 @@ const Wallets = () => {
   //   addWallet,
   // } = useGlobalContext();
 
-  const { wallets, sataus } = useAppSelector((state) => state.wallets);
+  const { wallets, status } = useAppSelector((state) => state.wallets);
 
   const {
     register,
