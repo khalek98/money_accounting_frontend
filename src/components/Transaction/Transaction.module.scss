@@ -50,7 +50,7 @@
 .ItemInfo {
   display: grid;
   grid-template-columns: repeat(2, auto);
-  align-items: center;
+  align-items: start;
   gap: 10px;
 
   font-size: 16px;

@@ -43,10 +43,6 @@ type Props = {
 };
 
 const Transaction: FC<Props> = ({ categories, transactions, title }) => {
-  // const {
-  //   addTransaction,
-  //   deleteTransaction,
-  // } = useGlobalContext();
   const dispatch = useAppDispatch();
   const {
     handleSubmit,
@@ -137,8 +133,10 @@ const Transaction: FC<Props> = ({ categories, transactions, title }) => {
       amount: +formState.amount,
     };
 
-    dispatch(addTransaction(sendObj));
-    dispatch(fetchTransactions());
+    dispatch(addTransaction(sendObj)).then(() => {
+      dispatch(fetchTransactions());
+      dispatch(fetchWallets());
+    });
 
     if (status === StatusType.SUCCESS) {
       setFormState({ ...formState, amount: "", description: "" });
@@ -147,7 +145,10 @@ const Transaction: FC<Props> = ({ categories, transactions, title }) => {
   };
 
   const onDeleteTransaction = (id: string) => {
-    dispatch(deleteTransaction(id));
+    dispatch(deleteTransaction(id)).then(() => {
+      dispatch(fetchTransactions());
+      dispatch(fetchWallets());
+    });
 
     if (status === StatusType.SUCCESS) {
       reset();

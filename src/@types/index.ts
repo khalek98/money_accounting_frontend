@@ -17,6 +17,7 @@ export interface ICategory {
   _id?: string;
   name: string;
   type: TransactionType;
+  userid?: string;
 }
 
 export interface IUser {
@@ -45,6 +46,15 @@ export interface IApiGetCategories {
   data: ICategory[];
 }
 
+export interface IApiAddCategory {
+  message: string;
+  result: ICategory;
+}
+
+export interface IApiAddWallet {
+  message: string;
+  result: IWallet;
+}
 export interface IApiAddTransaction {
   message: string;
   result: ITransaction;

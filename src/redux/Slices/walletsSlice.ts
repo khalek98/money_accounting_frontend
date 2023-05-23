@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 
-import { IWallet, StatusType, IApiGetWallets } from "@/@types";
+import { IWallet, StatusType, IApiGetWallets, IApiAddWallet } from "@/@types";
 
 interface WalletsSliceInterface {
   wallets: IWallet[] | [];
@@ -11,6 +11,18 @@ interface WalletsSliceInterface {
 
 export const fetchWallets = createAsyncThunk<IApiGetWallets>("wallets/fetchWallets", async () => {
   const { data } = await axios.get<IApiGetWallets>("/api/wallets/");
+
+  return data;
+});
+
+export const addWallet = createAsyncThunk("wallets/addWallet", async (wallet: IWallet) => {
+  const { data } = await axios.post<IApiAddWallet>("/api/wallets/", wallet);
+
+  return data;
+});
+
+export const deleteWallet = createAsyncThunk("wallets/deleteWallet", async (id: string) => {
+  const { data } = await axios.delete(`/api/wallets/${id}`);
 
   return data;
 });

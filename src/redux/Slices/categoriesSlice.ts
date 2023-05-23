@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 
-import { ICategory, StatusType, IApiGetCategories } from "@/@types";
+import { ICategory, StatusType, IApiGetCategories, IApiAddCategory } from "@/@types";
 
 interface CategoriesSliceInterface {
   incomeCategories: ICategory[] | [];
   expenseCategories: ICategory[] | [];
-  sataus: StatusType;
+  status: StatusType;
   message: string;
 }
 
@@ -28,10 +28,25 @@ export const fetchExpenseCategories = createAsyncThunk<IApiGetCategories>(
   },
 );
 
+export const addCategory = createAsyncThunk(
+  "categories/addCategory",
+  async (category: ICategory) => {
+    const { data } = await axios.post<IApiAddCategory>("/api/categories", category);
+
+    return data;
+  },
+);
+
+export const deleteCategory = createAsyncThunk("categories/deleteCategory", async (id: string) => {
+  const { data } = await axios.delete(`/api/categories/${id}`);
+
+  return data;
+});
+
 const initialState: CategoriesSliceInterface = {
   incomeCategories: [],
   expenseCategories: [],
-  sataus: StatusType.HOLD,
+  status: StatusType.HOLD,
   message: "",
 };
 
@@ -42,30 +57,54 @@ const categoriesSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchIncomeCategories.pending, (state) => {
-        state.sataus = StatusType.LOADING;
+        state.status = StatusType.LOADING;
         state.message = "";
       })
       .addCase(fetchIncomeCategories.fulfilled, (state, action) => {
         state.incomeCategories = action.payload.data;
-        state.sataus = StatusType.SUCCESS;
+        state.status = StatusType.SUCCESS;
         state.message = "";
       })
       .addCase(fetchIncomeCategories.rejected, (state) => {
-        state.sataus = StatusType.ERROR;
+        state.status = StatusType.ERROR;
         state.message = "Income categories fetch failed!";
       })
       .addCase(fetchExpenseCategories.pending, (state) => {
-        state.sataus = StatusType.LOADING;
+        state.status = StatusType.LOADING;
         state.message = "";
       })
       .addCase(fetchExpenseCategories.fulfilled, (state, action) => {
         state.expenseCategories = action.payload.data;
-        state.sataus = StatusType.SUCCESS;
+        state.status = StatusType.SUCCESS;
         state.message = "";
       })
       .addCase(fetchExpenseCategories.rejected, (state) => {
-        state.sataus = StatusType.ERROR;
+        state.status = StatusType.ERROR;
         state.message = "Expense categories fetch failed!";
+      })
+      .addCase(addCategory.pending, (state) => {
+        state.status = StatusType.LOADING;
+        state.message = "";
+      })
+      .addCase(addCategory.fulfilled, (state) => {
+        state.status = StatusType.SUCCESS;
+        state.message = "Category added successfully!";
+      })
+      .addCase(addCategory.rejected, (state) => {
+        state.status = StatusType.ERROR;
+        state.message = "Category not added!";
+      })
+      .addCase(deleteCategory.pending, (state) => {
+        state.status = StatusType.LOADING;
+        state.message = "";
+      })
+      .addCase(deleteCategory.fulfilled, (state) => {
+        state.status = StatusType.SUCCESS;
+        state.message = "Category deleted successfully!";
+      })
+      .addCase(deleteCategory.rejected, (state) => {
+        state.status = StatusType.ERROR;
+        state.message = "Category not deleted!";
       });
   },
 });

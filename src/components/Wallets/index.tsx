@@ -8,8 +8,9 @@ import InnerLayout from "@/layouts/InnerLayout";
 import { ErrorMessage, Form, Input, InputContainer, Label } from "../FormElements";
 import Button from "../Button";
 import { Plus, Spinner, Trash } from "@/utils/Icons";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { StatusType } from "@/@types";
+import { addWallet, deleteWallet, fetchWallets } from "@/redux/Slices/walletsSlice";
 
 type WalletFormTypes = {
   walletName: string;
@@ -17,10 +18,7 @@ type WalletFormTypes = {
 };
 
 const Wallets = () => {
-  // const {
-  //   deleteWallet,
-  //   addWallet,
-  // } = useGlobalContext();
+  const dispatch = useAppDispatch();
 
   const { wallets, status } = useAppSelector((state) => state.wallets);
 
@@ -57,15 +55,16 @@ const Wallets = () => {
     };
 
   const onSubmit = (data: WalletFormTypes) => {
-    console.log({ name: data.walletName, balance: +data.balance });
-    // addWallet({ name: data.walletName, balance: +data.balance });
-
-    reset();
+    dispatch(addWallet({ name: data.walletName, balance: +data.balance })).then(() => {
+      dispatch(fetchWallets());
+      reset();
+    });
   };
 
   const onDeleteWallet = (id: string) => {
-    // deleteWallet(id);
-    console.log(id);
+    dispatch(deleteWallet(id)).then(() => {
+      dispatch(fetchWallets());
+    });
   };
 
   return (

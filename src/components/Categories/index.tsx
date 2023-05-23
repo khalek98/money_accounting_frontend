@@ -11,7 +11,12 @@ import CustomSelect from "../CustomSelect";
 import Button from "../Button";
 import { Plus, Spinner, Trash } from "@/utils/Icons";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { fetchExpenseCategories, fetchIncomeCategories } from "@/redux/Slices/categoriesSlice";
+import {
+  addCategory,
+  deleteCategory,
+  fetchExpenseCategories,
+  fetchIncomeCategories,
+} from "@/redux/Slices/categoriesSlice";
 
 type Props = {
   title: string;
@@ -28,13 +33,9 @@ type CategoryFormTypes = {
 };
 
 const Categories: FC<Props> = ({ title }) => {
-  // const {
-  //   deleteCategory,
-  //   addCategory,
-  // } = useGlobalContext();
   const dispatch = useAppDispatch();
 
-  const { incomeCategories, expenseCategories, sataus } = useAppSelector(
+  const { incomeCategories, expenseCategories, status } = useAppSelector(
     (state) => state.categories,
   );
 
@@ -62,8 +63,10 @@ const Categories: FC<Props> = ({ title }) => {
   });
 
   useEffect(() => {
-    dispatch(fetchIncomeCategories());
-    dispatch(fetchExpenseCategories());
+    if (!incomeCategories && !expenseCategories) {
+      dispatch(fetchIncomeCategories());
+      dispatch(fetchExpenseCategories());
+    }
   }, []);
 
   const onSubmit = (data: CategoryFormTypes) => {
@@ -72,17 +75,24 @@ const Categories: FC<Props> = ({ title }) => {
         ? TransactionType.INCOME
         : TransactionType.EXPENSE;
 
-    // addCategory({
-    //   name: data.categoryName,
-    //   type,
-    // });
-
-    reset();
+    dispatch(addCategory({ name: data.categoryName, type })).then(() => {
+      if (type === TransactionType.INCOME) {
+        dispatch(fetchIncomeCategories());
+      } else {
+        dispatch(fetchExpenseCategories());
+      }
+      reset();
+    });
   };
 
   const onDeleteCategory = (id: string) => {
-    // deleteCategory(id);
-    console.log(id);
+    dispatch(deleteCategory(id)).then(() => {
+      if (selectedCategoryType.name === TransactionType.INCOME) {
+        dispatch(fetchIncomeCategories());
+      } else {
+        dispatch(fetchExpenseCategories());
+      }
+    });
   };
 
   return (
