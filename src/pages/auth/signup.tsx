@@ -40,10 +40,16 @@ const SignUp = () => {
   const password = watch("password");
 
   // useEffect(() => {
-  //   if (isAuth) {
-  //     navigate("/");
+  //   if (Cookies.get("token")) {
+  //     dispatch(fetchUser());
   //   }
-  // });
+  // }, []);
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/");
+    }
+  }, []);
 
   const confirmPasswordValidation = (value: string) => {
     if (value !== password) {

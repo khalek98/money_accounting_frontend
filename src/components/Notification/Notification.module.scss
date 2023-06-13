@@ -1,15 +1,14 @@
 .Notification {
-  position: fixed;
-  bottom: 15px;
-  left: 15px;
+  position: relative;
+  // bottom: 15px;
+  // left: 15px;
   padding: 20px 50px 20px 20px;
 
   display: flex;
   justify-content: space-between;
 
   height: auto;
-  width: calc(100% - 30px);
-  max-width: 767px;
+  width: 100%;
 
   letter-spacing: 1px;
   font-weight: 700;
@@ -27,10 +26,6 @@
   &.error {
     background-color: lightcoral;
     color: crimson;
-  }
-
-  @media screen and (min-width: 768px) {
-    max-width: 400px;
   }
 
   @keyframes slideIn {

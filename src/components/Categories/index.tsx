@@ -17,6 +17,8 @@ import {
   fetchExpenseCategories,
   fetchIncomeCategories,
 } from "@/redux/Slices/categoriesSlice";
+import { addNotification } from "@/redux/Slices/notificationSlice";
+import { nanoid } from "@reduxjs/toolkit";
 
 type Props = {
   title: string;
@@ -70,29 +72,72 @@ const Categories: FC<Props> = ({ title }) => {
   }, []);
 
   const onSubmit = (data: CategoryFormTypes) => {
+    const notificationId = nanoid();
+
     const type =
       selectedCategoryType.name === TransactionType.INCOME
         ? TransactionType.INCOME
         : TransactionType.EXPENSE;
 
-    dispatch(addCategory({ name: data.categoryName, type })).then(() => {
-      if (type === TransactionType.INCOME) {
-        dispatch(fetchIncomeCategories());
-      } else {
-        dispatch(fetchExpenseCategories());
-      }
-      reset();
-    });
+    dispatch(addCategory({ name: data.categoryName, type }))
+      .then(() => {
+        if (type === TransactionType.INCOME) {
+          dispatch(fetchIncomeCategories());
+        } else {
+          dispatch(fetchExpenseCategories());
+        }
+      })
+      .then(() => {
+        reset();
+
+        dispatch(
+          addNotification({
+            message: "Category added successfully",
+            status: StatusType.SUCCESS,
+            id: notificationId,
+          }),
+        );
+      })
+      .catch(() => {
+        dispatch(
+          addNotification({
+            message: "Category not added",
+            status: StatusType.ERROR,
+            id: notificationId,
+          }),
+        );
+      });
   };
 
   const onDeleteCategory = (id: string) => {
-    dispatch(deleteCategory(id)).then(() => {
-      if (selectedCategoryType.name === TransactionType.INCOME) {
-        dispatch(fetchIncomeCategories());
-      } else {
-        dispatch(fetchExpenseCategories());
-      }
-    });
+    const notificationId = nanoid();
+
+    dispatch(deleteCategory(id))
+      .then(() => {
+        if (selectedCategoryType.name === TransactionType.INCOME) {
+          dispatch(fetchIncomeCategories());
+        } else {
+          dispatch(fetchExpenseCategories());
+        }
+      })
+      .then(() => {
+        dispatch(
+          addNotification({
+            message: `Category successfully deleted`,
+            status: StatusType.SUCCESS,
+            id: notificationId,
+          }),
+        );
+      })
+      .catch(() => {
+        dispatch(
+          addNotification({
+            message: "Category not deleted",
+            status: StatusType.ERROR,
+            id: notificationId,
+          }),
+        );
+      });
   };
 
   return (

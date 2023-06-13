@@ -1,13 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "@/utils/axios";
 
-import {
-  ITransaction,
-  StatusType,
-  IApiGetTransactions,
-  IApiAddTransaction,
-  TransactionType,
-} from "@/@types";
+import { ITransaction, StatusType, IApiGetTransactions, IApiAddTransaction } from "@/@types";
 
 interface TransactionsSliceInterface {
   incomeTransactions: ITransaction[] | [];
@@ -84,11 +78,6 @@ const transactionsSlice = createSlice({
       .addCase(addTransaction.fulfilled, (state, action) => {
         state.sataus = StatusType.SUCCESS;
         state.message = "Transaction added successfully!";
-        // if (action.payload.result.type === TransactionType.INCOME) {
-        //   state.incomeTransactions = [...state.incomeTransactions, action.payload.result];
-        // } else {
-        //   state.expenseTransactions = [...state.expenseTransactions, action.payload.result];
-        // }
       })
       .addCase(addTransaction.rejected, (state) => {
         state.sataus = StatusType.ERROR;

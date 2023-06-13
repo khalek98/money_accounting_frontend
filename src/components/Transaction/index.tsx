@@ -21,6 +21,8 @@ import {
   fetchTransactions,
 } from "@/redux/Slices/transactionsSlice";
 import { fetchWallets } from "@/redux/Slices/walletsSlice";
+import { addNotification } from "@/redux/Slices/notificationSlice";
+import { nanoid } from "@reduxjs/toolkit";
 
 type IncomeFormTypes = {
   amount: string;
@@ -127,16 +129,35 @@ const Transaction: FC<Props> = ({ categories, transactions, title }) => {
   }, [selectedCategory, categories]);
 
   const onSubmit = (data: IncomeFormTypes) => {
+    const notificationId = nanoid();
+
     const sendObj: ITransaction = {
       ...formState,
       type: title === "Incomes" ? TransactionType.INCOME : TransactionType.EXPENSE,
       amount: +formState.amount,
     };
 
-    dispatch(addTransaction(sendObj)).then(() => {
-      dispatch(fetchTransactions());
-      dispatch(fetchWallets());
-    });
+    dispatch(addTransaction(sendObj))
+      .then(() => {
+        dispatch(fetchTransactions());
+        dispatch(fetchWallets());
+        dispatch(
+          addNotification({
+            message: "Transaction added",
+            status: StatusType.SUCCESS,
+            id: notificationId,
+          }),
+        );
+      })
+      .catch(() => {
+        dispatch(
+          addNotification({
+            message: "Transaction not added",
+            status: StatusType.ERROR,
+            id: notificationId,
+          }),
+        );
+      });
 
     if (status === StatusType.SUCCESS) {
       setFormState({ ...formState, amount: "", description: "" });
@@ -148,11 +169,16 @@ const Transaction: FC<Props> = ({ categories, transactions, title }) => {
     dispatch(deleteTransaction(id)).then(() => {
       dispatch(fetchTransactions());
       dispatch(fetchWallets());
-    });
+      dispatch(
+        addNotification({
+          message: "Transaction successfully deleted",
+          status: StatusType.SUCCESS,
+          id: nanoid(),
+        }),
+      );
 
-    if (status === StatusType.SUCCESS) {
       reset();
-    }
+    });
   };
 
   const renderTransactionsList = () => {

@@ -25,8 +25,6 @@ const App: FC = () => {
   const { incomeCategories, expenseCategories } = useAppSelector((state) => state.categories);
   const { incomeTransactions, expenseTransactions } = useAppSelector((state) => state.transactions);
 
-  // console.log(incomeTransactions, expenseTransactions);
-
   const [active, setActive] = useState<number>(1);
 
   useEffect(() => {

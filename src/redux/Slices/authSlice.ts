@@ -30,7 +30,7 @@ export const fetchSignIn = createAsyncThunk<SignInResponseType, SignInFormType>(
   "auth/fetchSignIn",
   async (user) => {
     const { data } = await axios.post<SignInResponseType>("/api/auth/signin", user);
-    Cookies.set("token", data.token, { expires: 1, path: "/" });
+    localStorage.setItem("token", data.token);
 
     return data;
   },

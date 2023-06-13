@@ -6,6 +6,7 @@ import { authReducer } from "./Slices/authSlice";
 import { walletsReducer } from "./Slices/walletsSlice";
 import { categoriesReducer } from "./Slices/categoriesSlice";
 import { transactionsReducer } from "./Slices/transactionsSlice";
+import { notificationReducer } from "./Slices/notificationSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     wallets: walletsReducer,
     categories: categoriesReducer,
     transactions: transactionsReducer,
+    notifications: notificationReducer,
   },
 });
 

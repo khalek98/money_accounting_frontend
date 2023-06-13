@@ -9,6 +9,9 @@ import { ReactComponent as UserSvgThumb } from "@/assets/icons/user.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { signOut } from "@/redux/Slices/authSlice";
 import Cookies from "js-cookie";
+import { addNotification } from "@/redux/Slices/notificationSlice";
+import { StatusType } from "@/@types";
+import { nanoid } from "@reduxjs/toolkit";
 
 type Props = {
   active: number;
@@ -22,6 +25,13 @@ const Navigation: React.FC<Props> = ({ active, setActive }) => {
   const handleSignOut = () => {
     Cookies.set("token", "");
     dispatch(signOut());
+    dispatch(
+      addNotification({
+        message: "Sign out successfully",
+        status: StatusType.SUCCESS,
+        id: nanoid(),
+      }),
+    );
   };
 
   return (

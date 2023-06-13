@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import cn from "classnames";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { nanoid } from "@reduxjs/toolkit";
 
 import styles from "./Auth.module.scss";
 
@@ -15,6 +16,7 @@ import { ErrorMessage, Form, Input, InputContainer, Label } from "@/components/F
 import { Spinner } from "@/utils/Icons";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { fetchSignIn, fetchUser } from "@/redux/Slices/authSlice";
+import { addNotification } from "@/redux/Slices/notificationSlice";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const SignIn = () => {
   } = useForm<SignInFormType>();
 
   useEffect(() => {
-    if (Cookies.get("token")) {
+    if (localStorage.getItem("token")) {
       dispatch(fetchUser());
     }
   }, []);
@@ -51,7 +53,15 @@ const SignIn = () => {
   }, [status]);
 
   const onSubmit: SubmitHandler<SignInFormType> = async (data) => {
-    dispatch(fetchSignIn(data));
+    dispatch(fetchSignIn(data)).then(() => {
+      dispatch(
+        addNotification({
+          message: "Sign in successfully",
+          status: StatusType.SUCCESS,
+          id: nanoid(),
+        }),
+      );
+    });
   };
 
   return (

@@ -2,29 +2,28 @@ import { FC, useEffect } from "react";
 import cn from "classnames";
 
 import styles from "./Notification.module.scss";
-import { useAppSelector } from "@/redux/store";
 
-const Notification: FC = () => {
-  // const { notification, setNotification } = useGlobalContext();
+import { useAppDispatch } from "@/redux/store";
+import { INotification, removeNotification } from "@/redux/Slices/notificationSlice";
 
-  // const { status, message, autoCloseTimeout = 5000 } = notification;
-  const { status, message } = useAppSelector((state) => state.auth);
+interface NotificationProps {
+  notification: INotification;
+}
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setNotification({
-  //       ...notification,
-  //       autoCloseTimeout: 5000,
-  //       status: "hold",
-  //       message: "",
-  //     });
-  //   }, autoCloseTimeout);
+const Notification: FC<NotificationProps> = ({ notification }) => {
+  const dispatch = useAppDispatch();
+  const { status, message, autoCloseTimeout } = notification;
 
-  //   return () => clearTimeout(timer);
-  // }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch(removeNotification(notification.id));
+    }, autoCloseTimeout);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleClose = () => {
-    // setNotification({ ...notification, status: "hold", message: "" });
+    dispatch(removeNotification(notification.id));
   };
 
   return (
