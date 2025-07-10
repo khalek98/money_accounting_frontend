@@ -20,30 +20,36 @@ interface AuthSliceStates {
   message: string;
 }
 
-export const fetchUser = createAsyncThunk<fetchUserResponseType>("auth/fetchUser", async () => {
-  const { data } = await axios.get<fetchUserResponseType>("/api/auth/");
+export const fetchUser = createAsyncThunk<fetchUserResponseType>(
+  "auth/fetchUser",
+  async () => {
+    const { data } = await axios.get<fetchUserResponseType>("/api/auth/");
 
-  return data;
-});
+    return data;
+  }
+);
 
 export const fetchSignIn = createAsyncThunk<SignInResponseType, SignInFormType>(
   "auth/fetchSignIn",
   async (user) => {
-    const { data } = await axios.post<SignInResponseType>("/api/auth/signin", user);
+    const { data } = await axios.post<SignInResponseType>(
+      "/api/auth/signin",
+      user
+    );
     localStorage.setItem("token", data.token);
 
     return data;
-  },
+  }
 );
 
-export const fetchSignUp = createAsyncThunk<AxiosResponse<SignUpResponseType>, SignUpFormType>(
-  "auth/fetchSignUp",
-  async (user) => {
-    const res = axios.post<SignUpResponseType>("/api/auth/signup", user);
+export const fetchSignUp = createAsyncThunk<
+  AxiosResponse<SignUpResponseType>,
+  SignUpFormType
+>("auth/fetchSignUp", async (user) => {
+  const res = axios.post<SignUpResponseType>("/api/auth/signup", user);
 
-    return res;
-  },
-);
+  return res;
+});
 
 const initialState: AuthSliceStates = {
   user: null,
@@ -59,6 +65,7 @@ const authSlice = createSlice({
     signOut(state) {
       state.user = null;
       state.isAuth = false;
+      window.localStorage.removeItem("token");
     },
     setStatus(state) {
       state.status = StatusType.HOLD;
